@@ -6,12 +6,10 @@
   <title>meii</title> 
   <link rel="stylesheet" href="styles.css">
   <script src="vara.min.js"></script>
-
-
 </head>
 <body>
-	<audio autoplay>
-    <source src="music/jaz.mp3" type="audio/mpeg">
+  <audio id="background-music" autoplay muted>
+    <source src="music/jaz.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
   <div id="container"></div>
@@ -30,14 +28,9 @@
       <div></div>
     </div>
   </div>
+  <!-- Control Button -->
+  <button id="control-button">Putar</button>
   <script>
-	window.addEventListener('DOMContentLoaded', (event) => {
-      var audio = document.getElementById('background-music');
-      audio.play().catch(function(error) {
-        console.log('Autoplay was prevented:', error);
-      });
-    });
-
     var fontSize = 20;
     if (window.screen.width > 1200) {
       fontSize = 40;
@@ -105,8 +98,28 @@
         textAlign: "center"
       }
     );
+
+    // Ensure Vara animation and audio play together
+    function startAnimationAndAudio() {
+      var audio = document.getElementById('background-music');
+      var button = document.getElementById('control-button');
+
+      // Play audio
+      audio.muted = false;
+      audio.play().catch(function(error) {
+        console.log('Autoplay was prevented:', error);
+      });
+
+      // Start Vara animation
+      vara.playAll(); 
+
+      // Hide the button after clicking
+      button.style.display = 'none';
+    }
+
+    document.getElementById('control-button').addEventListener('click', startAnimationAndAudio);
+
     vara.ready(function () {
-      var erase = true;
       vara.animationEnd(function (i, o) {
         if (i == "no_erase") erase = false;
         if (erase) {
@@ -114,6 +127,12 @@
           o.container.style.opacity = 0;
         }
       });
+    });
+
+    // Remove auto-play and auto-mute
+    window.addEventListener('DOMContentLoaded', (event) => {
+      var audio = document.getElementById('background-music');
+      audio.muted = true; // Ensure audio is muted initially
     });
   </script>
 </body>
