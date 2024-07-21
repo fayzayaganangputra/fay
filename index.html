@@ -136,12 +136,19 @@ vara.ready(function () {
   });
 });
 
-// Start playing audio when page loads
-window.addEventListener('DOMContentLoaded', (event) => {
+document.getElementById('control-button').addEventListener('click', () => {
+  console.log('Button clicked');
+  document.getElementById('control-button').style.display = 'none';
+  initializeVara();
   var audio = document.getElementById('background-music');
-  audio.muted = false; // Unmute audio
-  audio.play().catch(function(error) {
-    console.log('Autoplay was prevented:', error);
+  audio.muted = false;
+  audio.play().catch(error => {
+    console.log('Error playing audio:', error);
+  });
+  
+  // Mulai animasi setelah musik mulai
+  vara.ready(() => {
+    vara.start();
   });
 });
   </script>
